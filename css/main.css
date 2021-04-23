@@ -1,0 +1,490 @@
+:root {
+  --transition-duration: .15s;
+}
+
+body {
+  font-family: Work Sans, sans-serif;
+  line-height: 1.2;
+  color: #335;
+  background: hsl(32.3, 17.3%, 85.3%);
+}
+
+#main {
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: 30% auto;
+}
+
+#interface {
+  padding: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#interface>* {
+  max-width: 30ch;
+  margin: 0 auto;
+}
+
+#interface .title {
+  margin-bottom: 3rem;
+}
+
+#interface .tools {
+  flex: 1 0 auto;
+  margin-bottom: 1rem;
+}
+
+#container {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  position: relative;
+}
+
+button.foldController {
+  display: none;
+}
+
+#credits {
+  font-size: .66rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+@media (orientation: portrait) {
+  #main {
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: auto;
+  }
+
+  #interface {
+    padding: 1rem;
+    overflow: hidden;
+  }
+
+  #interface .tools {
+    margin-top: 1rem;
+  }
+
+  #interface.interface--isFolded .tools,
+  #interface.interface--isFolded .bottom {
+    display: none;
+  }
+
+  #interface .title {
+    margin-bottom: 0;
+  }
+
+  #container {
+    grid-row: 2 / span 1;
+    grid-column: 1;
+  }
+
+  p + p {
+    margin-top: .3rem;
+  }
+
+  button.foldController {
+    display: block;
+    position: absolute;
+    background: hsl(32.3, 17.3%, 85.3%);
+    border: 3px solid rgba(0, 0, 32, .4);
+    top: 0;
+    height: 2rem;
+    width: 3rem;
+    z-index: 1;
+    border-top: 0;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    right: 2rem;
+  }
+
+}
+
+/* Links */
+
+a {
+  font-weight: bold;
+  font-weight: 500;
+  color: #002;
+  transition: color var(--transition-duration) ease;
+}
+
+a:hover {
+  color: #557;
+}
+
+/* Typography */
+
+p+p {
+  margin-top: 1rem;
+}
+
+.size-big {
+  font-size: 1.20rem;
+}
+
+.size-small,
+small {
+  font-size: 0.85rem;
+}
+
+.size-smaller {
+  font-size: .70em;
+}
+
+.weight-thin {
+  font-weight: 100;
+}
+
+.weight-extralight {
+  font-weight: 200;
+}
+
+.weight-light {
+  font-weight: 300;
+}
+
+.weight-regular {
+  font-weight: 400;
+}
+
+.weight-medium {
+  font-weight: 500;
+}
+
+strong,
+.weight-semibold {
+  font-weight: 600;
+}
+
+.weight-bold {
+  font-weight: 700;
+}
+
+.weight-extrabold {
+  font-weight: 800;
+}
+
+.weight-black {
+  font-weight: 900;
+}
+
+abbr {
+  text-decoration-color: hsl(240, 25%, 26.7%, .3);
+}
+
+/* Cartography */
+
+svg#map {
+  display: block;
+  width: 100%;
+  min-width: inherit;
+  max-width: inherit;
+  height: 100%;
+  min-height: inherit;
+  max-height: inherit;
+  font-family: Work Sans, sans-serif;
+  font-weight: 600;
+}
+
+.placePoint {
+  transition: fill var(--transition-duration) ease;
+
+  stroke: #000;
+  stroke-width: 3px;
+  fill: #FFF;
+}
+
+.placePoint.placePoint--active {
+  stroke: #FFF;
+  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, .5));
+}
+
+.placeName {
+  opacity: 0;
+}
+
+.placeName.placeName--active {
+  opacity: 1;
+}
+
+.placeName__text {
+  font-size: .75rem;
+  stroke-width: 2px;
+}
+
+.placeName__bg {
+  fill: white;
+  filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, .5));
+}
+.placeName__bg.placeName__bg--left_aligned {
+  fill: white;
+  filter: drop-shadow(-2px 2px 0 rgba(0, 0, 0, .5));
+}
+
+.zonePoint,
+.zoneLine {
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity .4s ease-out;
+}
+
+.zonePoint:hover,
+.zoneLine:hover {
+  opacity: 0.1;
+  transition: opacity .2s ease-in;
+}
+
+.line__regular {
+  stroke: #399;
+}
+
+.line__hard {
+  stroke: #F60;
+}
+
+.line__easy {
+  stroke: #06F;
+}
+
+.lineArrow__hard {
+  fill: #F60;
+}
+
+.lineArrow__easy {
+  fill: #06F;
+}
+
+.isSelected.line__regular {
+  stroke: #936;
+  stroke-width: 9px;
+}
+
+.isSelected .line__hard,
+.isSelected .line__easy {
+  stroke: #936;
+  stroke-width: 5px;
+}
+
+.isSelected .lineArrow__hard,
+.isSelected .lineArrow__easy {
+  fill: #936;
+  stroke-width: 5px;
+}
+
+#trajectory {
+  display: none;
+}
+
+svg#map.trajectoryMode .line__element,
+svg#map.trajectoryMode .numberText {
+  opacity: .2;
+}
+
+svg#map.trajectoryMode .zoneLine {
+  display: none;
+}
+svg#map.trajectoryMode .zoneLine.possibleTrajectory,
+svg#map.trajectoryMode .zoneLine.isSelected {
+  display: unset;
+}
+
+svg#map.trajectoryMode .possibleTrajectory:not(.zoneLine),
+svg#map.trajectoryMode .line__element.isSelected,
+svg#map.trajectoryMode .numberText.isSelected {
+  opacity: 1;
+}
+
+svg#map text {
+  pointer-events: none;
+}
+
+.numberText {
+  fill: #333;
+  stroke: rgba(255, 255, 255, .5);
+  stroke-width: 3px;
+  paint-order: stroke;
+  font-size: .75rem;
+}
+
+.numberText.numberText--bottom {
+  font-size: .66rem;
+}
+
+.numberText.numberText--top {
+  font-size: .66rem;
+}
+
+/* Map controls */
+.mapControl {
+  position: absolute;
+  left: 10px;
+  font-size: .8rem;
+}
+
+.mapControl.mapControl--top {
+    top: 10px;
+}
+.mapControl.mapControl--bottom {
+    bottom: 10px;
+}
+
+.mapControl button {
+  padding: .3rem .5rem;
+  margin: 1px;
+}
+
+button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: hsl(32.3, 17.3%, 90%);
+  cursor: pointer;
+  font-weight: 600;
+  color: #002;
+  transition:
+    background-color var(--transition-duration) ease,
+    color var(--transition-duration) ease;
+}
+
+button:hover,
+button:focus {
+  color: #FFF !important;
+  background-color: #557 !important;
+}
+
+button:active {
+  color: #FFF;
+  background-color: #113 !important;
+}
+
+button.link {
+  background: none;
+  padding: 0 .2em;
+  color: #335;
+  text-decoration: underline;
+  text-decoration-color: #335;
+  border-radius: 2px;
+}
+
+button.link:hover,
+button.link:focus {
+  text-decoration-color: #557;
+}
+
+button.link:disabled {
+    opacity: .7;
+    cursor: not-allowed;
+}
+
+button.link:hover:disabled,
+button.link:focus:disabled {
+    color: #335 !important;
+    background: transparent !important;
+}
+
+.mapControl.mapControl--column {
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 32, .4);
+  padding: 2px;
+  border-radius: 6px;
+}
+.mapControl.mapControl--column button:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.mapControl.mapControl--column button:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.mapControl.mapControl--cross {
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  background: none;
+}
+
+.mapControl.mapControl--cross span.cross__block {
+  background: rgba(0, 0, 32, .4);
+  display: flex;
+  align-items: center;
+}
+
+.mapControl.mapControl--cross span.cross__left {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  grid-row: 2 / span 1;
+  grid-column: 1 / span 1;
+  margin: -1px 0 -1px 1px;
+  justify-content: flex-end;
+}
+.mapControl.mapControl--cross span.cross__right {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  grid-row: 2 / span 1;
+  grid-column: 3 / span 1;
+  margin: -1px 1px -1px 0;
+  justify-content: flex-start;
+}
+.mapControl.mapControl--cross span.cross__up {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  grid-row: 1 / span 1;
+  grid-column: 2 / span 1;
+  margin: 1px -1px 0;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.mapControl.mapControl--cross span.cross__down {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  grid-row: 3 / span 1;
+  grid-column: 2 / span 1;
+  margin: 0 -1px 1px;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.mapControl.mapControl--cross span.cross__center {
+  grid-row: 2 / span 1;
+  grid-column: 2 / span 1;
+}
+
+.mapControl.mapControl--cross button.panButton {
+  width: 2em;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px;
+}
+
+.mapControl.mapControl--cross span.cross__left button.panButton {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  margin-right: 0;
+}
+.mapControl.mapControl--cross span.cross__right button.panButton {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  margin-left: 0;
+}
+.mapControl.mapControl--cross span.cross__up button.panButton {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  margin-bottom: 0;
+}
+.mapControl.mapControl--cross span.cross__down button.panButton {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  margin-top: 0;
+}
